@@ -21,7 +21,17 @@ using System;
 
 namespace activitat4C_
 {
-    public class AngryBird {
+    public class Partida{
+        public class Jugador:Partida {
+            public string nombre;
+            public int turno;
+            public Jugador(string nombre, int turno){
+                this.nombre = nombre;
+                this.turno = turno;
+            }
+        }
+
+        public class AngryBird:Partida {
             public string nombre;
             public string especie;
             public string poder;
@@ -32,23 +42,26 @@ namespace activitat4C_
                 this.especie = especie;
                 this.poder = poder;
                 this.energia = energia;
-            }
-        
+            }        
+        }
     }
+    
     class Program
     {
-        // crear jugador 1/2;
         static void Main(string[] args)
         {
-            AngryBird rojo = new AngryBird("Red","cardenal","ninguno",2);
-            AngryBird amarillo = new AngryBird("Chuck","canario","velocidad",23);
-            AngryBird azules = new AngryBird("Jay Jake Jim","azulejo","dividirse en tres",64);
-            AngryBird verde = new AngryBird("Hal","tucán","efecto bumerang",45);
-            AngryBird negro = new AngryBird("Bomb","cuervo","explotar",67);
-            AngryBird blanco = new AngryBird("Matilda","gallina","lanzar un huevo explosivo",91);
-            AngryBird naranja = new AngryBird("Bubbles","gorrión","hincharse",13);
-            AngryBird rosa = new AngryBird("Stella","cacatua Galah","hacer burbujas",31);
-            AngryBird rojoGordo = new AngryBird("Terence","cardenal","su peso",44);
+            Partida.AngryBird rojo = new Partida.AngryBird("Red","cardenal","ninguno",2);
+            Partida.AngryBird amarillo = new Partida.AngryBird("Chuck","canario","velocidad",23);
+            Partida.AngryBird azules = new Partida.AngryBird("Jay Jake Jim","azulejo","dividirse en tres",64);
+            Partida.AngryBird verde = new Partida.AngryBird("Hal","tucán","efecto bumerang",45);
+            Partida.AngryBird negro = new Partida.AngryBird("Bomb","cuervo","explotar",67);
+            Partida.AngryBird blanco = new Partida.AngryBird("Matilda","gallina","lanzar un huevo explosivo",91);
+            Partida.AngryBird naranja = new Partida.AngryBird("Bubbles","gorrión","hincharse",13);
+            Partida.AngryBird rosa = new Partida.AngryBird("Stella","cacatua Galah","hacer burbujas",31);
+            Partida.AngryBird rojoGordo = new Partida.AngryBird("Terence","cardenal","su peso",44);
+
+            Console.WriteLine(rojo.energia);
+            Console.WriteLine("Fin");
         }
     }
 
