@@ -1,4 +1,3 @@
-﻿
 // Crearem un programa amb C# per dos jugadors en mode batalla.
 // A cada partida, prèviament, es podrà establir un màxim d’angry birds per jugador: 1, 3 o 5.
 
@@ -24,9 +23,16 @@ namespace activitat4C_
 {
     public class AngryBird {
             public string nombre;
-            public int especie;
-            public int poder;
+            public string especie;
+            public string poder;
             public int energia;
+
+            public AngryBird(string nombre, string especie, string poder, int energia){
+                this.nombre = nombre;
+                this.especie = especie;
+                this.poder = poder;
+                this.energia = energia;
+            }
         
     }
     class Program
@@ -45,21 +51,6 @@ namespace activitat4C_
             AngryBird rojoGordo = new AngryBird("Terence","cardenal","su peso",44);
         }
     }
-   
-
-        
-        // Pájaro rojo: nombre: Red; especie: cardenal; poder: ninguno; energía: 2
-        // Pájaro amarillo: nombre: Chuck; especie: canario; poder: velocidad; energía: 23
-        // Pájaros azules: nombres: Jay, Jake y Jim; especie: azulejo; poder: dividirse en tres; energía: 64
-        // Pájaro verde: nombre: Hal; especie: tucán; poder: efecto bumerang; energía: 45
-        // Pájaro negro: nombre: Bomb; especie: cuervo; poder: explotar; energía: 67
-        // Pájaro blanco: nombre: Matilda; especie: gallina; poder: lanzar un huevo explosivo; energía: 91
-        // Pájaro naranja: nombre: Bubbles; especie: gorrión; poder: hincharse; energía: 13
-        // Pájaro rosa: nombre: Stella; especie: cacatua Galah; poder: hacer burbujas; energía: 31
-        // Pájaro rojo gordo: nombre: Terence; especie: cardenal; poder: su peso; energía: 44
-
-    
-
 
     // CREAR JUGADORES
 
