@@ -40,10 +40,8 @@ namespace activitat4C_
         }
     }
 
-
-    // CLASE PROGRAM
-    class Program
-    {
+    // CLASE PARTIDA
+    public class Partida{
         // PREGUNTAMOS CON CUÁNTAS CARTAS QUIEREN JUGAR
         public static int preguntarCartas(){
             int numCartas = 0;
@@ -137,8 +135,6 @@ namespace activitat4C_
             }
             // MOSTRAR AL GANADOR
             MostrarGanador(puntosJ1, puntosJ2);
-            
-            
         }
 
         // MOSTRAR CARTAS
@@ -166,8 +162,7 @@ namespace activitat4C_
                 }
             }
             Console.Clear();
-            return numSelect;
-            
+            return numSelect;            
         }
 
         // MOSTRAR GANADOR
@@ -181,10 +176,7 @@ namespace activitat4C_
                 Console.WriteLine("EMPATE !!!!!!!!!");
             }
         }
-
-        // COMIENZA EL PROGRAMA
-        static void Main(string[] args)
-        {
+        public void Batalla(){
             // CREAR CARTAS
             AngryBird rojo = new AngryBird("Red","cardenal","ninguno",2);
             AngryBird amarillo = new AngryBird("Chuck","canario","velocidad",23);
@@ -205,17 +197,19 @@ namespace activitat4C_
             Console.WriteLine("DAME TU NOMBRE DE JUGADOR2");
             string nombre2 = Console.ReadLine();
 
-            //Console.WriteLine(listaAngry[3].nombre);
             bool salir = false;
-            
             //NUMERO TOTAL DE CARTAS 
             while (salir==false)
             {
+                // PREGUNTAR TOTAL DE CARTAS
                 int number_of_carts = preguntarCartas();
                
                 //JUGADORES POR DEFECTO
+                
                 AngryBird [] jugador1 = new AngryBird [number_of_carts];
                 AngryBird [] jugador2 = new AngryBird [number_of_carts];
+
+                
 
                 //CREAR JUGADOR CON CLASE ME DA PEREZA CAMBIAR TODA LA ESTRUCTURA 
                 //AngryBird [] jugador1RepartirCartas = new AngryBird [number_of_carts];
@@ -226,13 +220,27 @@ namespace activitat4C_
                 //AngryBird [] jugador2RepartirCartas = new AngryBird [number_of_carts];
                 //AngryBird [] jugador2CartasRepartidas = repartirCartas(number_of_carts,listaAngry,jugador2RepartirCartas);
                 //Jugador jugador2 = new Jugador(nombre2, jugador2CartasRepartidas);
+
                 // JUGADORES CON LAS CARTAS REPARTIDAS
                 AngryBird [] jugador1CartasRepartidas = repartirCartas(number_of_carts,listaAngry,jugador1);
-                AngryBird [] jugador2CartasRepartidas = repartirCartas(number_of_carts,listaAngry,jugador2);
+                AngryBird [] jugador2CartasRepartidas = repartirCartas(number_of_carts,listaAngry,jugador2);                
+
                 PlayGame(jugador1CartasRepartidas, jugador2CartasRepartidas);
                 //PlayGame(jugador1, jugador2);
 
+                Jugador JugadorNum1 = new Jugador(nombre, jugador1CartasRepartidas);
+                Jugador JugadorNum2 = new Jugador(nombre, jugador2CartasRepartidas);
             } 
+        }
+    }
+    // CLASE PRINCIPAL
+    class JuegoDeCartas
+    {
+        // COMIENZA EL PROGRAMA
+        static void Main(string[] args)
+        {
+            Partida start = new Partida();
+            start.Batalla();
         } 
     }
 }
