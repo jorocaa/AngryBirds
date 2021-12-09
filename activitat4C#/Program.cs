@@ -1,14 +1,15 @@
-﻿
 using System;
 
 namespace activitat4C_
 {
+    // CLASE ANGRYBIRDS
     public class AngryBird {
         public string nombre;
         public string especie;
         public string poder;
         public int energia;
 
+        // CONSTRUCTOR CARTA ANGRYBIRD
         public AngryBird(string nombre, string especie, string poder, int energia){
             this.nombre = nombre;
             this.especie = especie;
@@ -16,6 +17,7 @@ namespace activitat4C_
             this.energia = energia;
         }
 
+        // BORRAR CARTAS ANGRYBIRDS (PROBLEMAS?)
         public void Delete()
         {
             this.nombre = null;
@@ -26,11 +28,12 @@ namespace activitat4C_
         
     }
 
+    // CLASE JUGADOR
     public class Jugador {
         public string nombre;
         public AngryBird[] cartas;
 
-        //CONSTRUCTOR
+        //CONSTRUCTOR JUGADOR
         public Jugador(string nombre, AngryBird[] cartas){
             this.nombre = nombre;
             this.cartas = cartas;
@@ -38,10 +41,10 @@ namespace activitat4C_
     }
 
 
-
+    // CLASE PROGRAM
     class Program
     {
-
+        // PREGUNTAMOS CON CUÁNTAS CARTAS QUIEREN JUGAR
         public static int preguntarCartas(){
             int numCartas = 0;
             bool choice = false;
@@ -50,26 +53,31 @@ namespace activitat4C_
                 string numberCarts = Console.ReadLine();
                 switch (numberCarts){
                     case "1":
+                        // ESCOGEN 1 CARTA
                         numCartas = 1;
                         choice = true;
                         break;
                     case "3":
+                        // ESCOGEN 3 CARTAS
                         numCartas = 3;
                         choice = true;
                         break;
                     case "5":
+                        // ESCOGEN 5 CARTAS
                         numCartas = 5;
                         choice = true;
                         break;
                     default:
+                        // ERROR AL ESCOGER
                         Console.WriteLine("Esta opcion no existe");
                         break;
                 }
             }
-            
+            // RETORNAMOS CON CUÁNTAS CARTAS QUIEREN JUGAR
             return numCartas;
         }   
-        // crear jugador 1/2;
+
+        // REPARTIMOS CARTAS A LOS JUGADORES
         public static AngryBird[] repartirCartas(int number_of_carts, AngryBird [] listaAngry,AngryBird [] jugador){
             for (int x =0; x<number_of_carts;x++){
                 var rand = new Random();
@@ -80,46 +88,68 @@ namespace activitat4C_
             return jugador;
         }
 
-        //ESTO TIENE QUE SER BOOL
+        // LA BATALLA DE CARTAS
         public static void PlayGame(AngryBird [] jugador1CartasRepartidas, AngryBird [] jugador2CartasRepartidas){
+            // CONTADOR DE PUNTOS POR JUGADOR
             int puntosJ1 = 0;
             int puntosJ2 = 0;
             Console.Clear();
+            
+            // GESTIONAR BATALLA
             for (int x = 0; x<jugador1CartasRepartidas.Length;x++){
+                // PREGUNTAMOS QUE CARTA QUIERE SACAR EL JUGADOR 1
                 Console.WriteLine("Jugador1 que carta deseas sacar? ");
+
+                // MOSTRAMOS LAS CARTAS DEL JUGADOR 1
                 MostrarCartas(jugador1CartasRepartidas);
                 
+                // COMPROBAMOS OPCIÓN INTRODUCIDA
                 int posicionJ1 = ExistePosicionCarta(jugador1CartasRepartidas);
 
+                // PREGUNTAMOS QUE CARTA QUIERE SACAR EL JUGADOR 2
                 Console.WriteLine("Jugador2 que carta deseas sacar? ");
+
+                // MOSTRAMOS LAS CARTAS DEL JUGADOR 2
                 MostrarCartas(jugador2CartasRepartidas);
             
+                // COMPROBAMOS OPCIÓN INTRODUCIDA
                 int posicionJ2 = ExistePosicionCarta(jugador2CartasRepartidas);
                 
+                // SI EL JUGADOR 1 TIENE MÁS ENERGÍA QUE EL JUGADOR 2
                 if(jugador1CartasRepartidas[posicionJ1].energia > jugador2CartasRepartidas[posicionJ2].energia)
                 {
+                    // PUNTO PARA JUGADOR 1
                     puntosJ1+=1;
                     Console.WriteLine("Gana el jugador 1");
 
-                }else
-                {
+                }
+                // SI ELS JUGADORS EMPATEN
+                else if(jugador1CartasRepartidas[posicionJ1].energia == jugador2CartasRepartidas[posicionJ2].energia){
+                    Console.WriteLine("EMPATE");
+
+                }
+                // SI EL JUGADOR 2 TIENE MÁS ENERGÍA QUE EL JUGADOR 1
+                else{
                     puntosJ2+=1;
                     Console.WriteLine("Gana el jugador 2");
                 }
                 
             }
+            // MOSTRAR AL GANADOR
             MostrarGanador(puntosJ1, puntosJ2);
             
             
         }
 
+        // MOSTRAR CARTAS
         public static void MostrarCartas(AngryBird [] mostrarCartas){
             Console.WriteLine("===========ESTAS SON TUS CARTAS===========");
             for(int x=0;x<mostrarCartas.Length;x++){
-                Console.WriteLine("Nombre: "+mostrarCartas[x].nombre +" Especie: " +  mostrarCartas[x].especie +" Poder: " +  mostrarCartas[x].poder + " Energia: "+ mostrarCartas[x].energia + "\n");
+                Console.WriteLine(x + "- Nombre: "+mostrarCartas[x].nombre +" Especie: " +  mostrarCartas[x].especie +" Poder: " +  mostrarCartas[x].poder + " Energia: "+ mostrarCartas[x].energia + "\n");
             }
         }
 
+        // COMPROVAR POSICIÓN CARTA
         public static int ExistePosicionCarta(AngryBird [] cartasJugador ){
             
             Console.WriteLine("===========ELEGIR CARTA JUGADOR===========");
@@ -140,6 +170,7 @@ namespace activitat4C_
             
         }
 
+        // MOSTRAR GANADOR
         public static void MostrarGanador(int puntosJ1, int puntosJ2){
             Console.Clear();
             if(puntosJ1>puntosJ2){
@@ -151,9 +182,10 @@ namespace activitat4C_
             }
         }
 
+        // COMIENZA EL PROGRAMA
         static void Main(string[] args)
         {
-            
+            // CREAR CARTAS
             AngryBird rojo = new AngryBird("Red","cardenal","ninguno",2);
             AngryBird amarillo = new AngryBird("Chuck","canario","velocidad",23);
             AngryBird azules = new AngryBird("Jay Jake Jim","azulejo","dividirse en tres",64);
@@ -164,15 +196,14 @@ namespace activitat4C_
             AngryBird rosa = new AngryBird("Stella","cacatua Galah","hacer burbujas",31);
             AngryBird rojoGordo = new AngryBird("Terence","cardenal","su peso",44);
 
+            // GESTIONAR CARTAS EN ARRAY
             AngryBird [] listaAngry = {rojo,amarillo,azules,verde,negro,blanco,naranja,rosa,rojoGordo};
 
             //CREAR A LOS 2 Jugadores
             Console.WriteLine("DAME TU NOMBRE DE JUGADOR1");
-            string nombre = Console.ReadLine();
-            
+            string nombre = Console.ReadLine();            
             Console.WriteLine("DAME TU NOMBRE DE JUGADOR2");
             string nombre2 = Console.ReadLine();
-
 
             //Console.WriteLine(listaAngry[3].nombre);
             bool salir = false;
