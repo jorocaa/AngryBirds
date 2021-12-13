@@ -20,9 +20,9 @@ namespace activitat4C_
         // BORRAR CARTAS ANGRYBIRDS (PROBLEMAS?)
         public void Delete()
         {
-            this.nombre = null;
-            this.especie= null;
-            this.poder= null;
+            this.nombre = "";
+            this.especie= "";
+            this.poder= "";
             this.energia = 0;
         }
         
@@ -75,13 +75,34 @@ namespace activitat4C_
             return numCartas;
         }   
 
-        // REPARTIMOS CARTAS A LOS JUGADORES
+        // REPARTIMOS CARTAS A LOS JUGADORES ////////////////// CONTROLAR QUE NO SE REPARTAN CARTAS REPETIDAS //////////////////
         public static AngryBird[] repartirCartas(int number_of_carts, AngryBird [] listaAngry,AngryBird [] jugador){
-            for (int x =0; x<number_of_carts;x++){
-                var rand = new Random();
-                int num = rand.Next(0,listaAngry.Length);
+            int[] listaNum = new int[number_of_carts];
+            
+            for (int x=0; x<number_of_carts; x++){
+                int num; 
+                bool existe;
+                
+                do{
+                    existe = false;
+                    var rand = new Random();
+                    num = rand.Next(0,listaAngry.Length);
+                    
+                    
+                    for (int a = 0; a <listaNum.Length;a++){   
+                        Console.WriteLine(listaNum[a]); 
+                        if(num == listaNum[a]){
+                            existe = true;
+                        } 
+                    }
+                    
+                }while(existe);
+                listaNum[x] = num;
                 jugador[x] = listaAngry[num];
+
+                
             }
+            
 
             return jugador;
         }
@@ -91,87 +112,94 @@ namespace activitat4C_
             // CONTADOR DE PUNTOS POR JUGADOR
             int puntosJ1 = 0;
             int puntosJ2 = 0;
+            
             Console.Clear();
             
             // GESTIONAR BATALLA
             for (int x = 0; x<JugadorNum1.cartas.Length;x++){
+                // MOSTRAR PUNTUACIÓN 
+                Console.WriteLine(JugadorNum1.nombre+": "+puntosJ1+"\n"+JugadorNum2.nombre+": "+puntosJ2);
+
                 // PREGUNTAMOS QUE CARTA QUIERE SACAR EL JUGADOR 1
                 Console.WriteLine(JugadorNum1.nombre+" que carta deseas sacar? ");
 
                 // MOSTRAMOS LAS CARTAS DEL JUGADOR 1
-                MostrarCartas(JugadorNum1.cartas);
+                MostrarCartas(JugadorNum1);
                 
                 // COMPROBAMOS OPCIÓN INTRODUCIDA
-                int posicionJ1 = ExistePosicionCarta(JugadorNum1.cartas);
+                int posicionJ1 = ExistePosicionCarta(JugadorNum1);
 
                 // PREGUNTAMOS QUE CARTA QUIERE SACAR EL JUGADOR 2
                 Console.WriteLine(JugadorNum2.nombre+" que carta deseas sacar? ");
 
                 // MOSTRAMOS LAS CARTAS DEL JUGADOR 2
-                MostrarCartas(JugadorNum2.cartas);
+                MostrarCartas(JugadorNum2);
             
                 // COMPROBAMOS OPCIÓN INTRODUCIDA
-                int posicionJ2 = ExistePosicionCarta(JugadorNum2.cartas);
+                int posicionJ2 = ExistePosicionCarta(JugadorNum2);
                 
+                // CARTAS JUGADAS
+                Console.WriteLine(JugadorNum1.nombre+" ha jugado con la carta "+JugadorNum1.cartas[posicionJ1].nombre+ "con un poder de "+JugadorNum1.cartas[posicionJ1].energia+"\n"+JugadorNum2.nombre+" ha jugado con la carta "+JugadorNum2.cartas[posicionJ2].nombre+ "con un poder de "+JugadorNum2.cartas[posicionJ2].energia);
+
                 // SI EL JUGADOR 1 TIENE MÁS ENERGÍA QUE EL JUGADOR 2
                 if(JugadorNum1.cartas[posicionJ1].energia > JugadorNum2.cartas[posicionJ2].energia)
                 {
                     // PUNTO PARA JUGADOR 1
                     puntosJ1+=1;
-                    Console.WriteLine("Gana el jugador 1");
-
                 }
                 // SI ELS JUGADORS EMPATEN
                 else if(JugadorNum1.cartas[posicionJ1].energia == JugadorNum2.cartas[posicionJ2].energia){
                     Console.WriteLine("EMPATE");
-
                 }
                 // SI EL JUGADOR 2 TIENE MÁS ENERGÍA QUE EL JUGADOR 1
                 else{
                     puntosJ2+=1;
-                    Console.WriteLine("Gana el jugador 2");
                 }
                 
+                // ELIMINAR CARTAS USADAS
+                JugadorNum1.cartas[posicionJ1].Delete();
+                JugadorNum2.cartas[posicionJ2].Delete();
             }
             // MOSTRAR AL GANADOR
-            MostrarGanador(puntosJ1, puntosJ2);
+            MostrarGanador(puntosJ1, puntosJ2, JugadorNum1, JugadorNum2);
         }
 
         // MOSTRAR CARTAS
-        public static void MostrarCartas(AngryBird [] mostrarCartas){
+        public static void MostrarCartas(Jugador  mostrarCartas){
             Console.WriteLine("===========ESTAS SON TUS CARTAS===========");
-            for(int x=0;x<mostrarCartas.Length;x++){
-                Console.WriteLine(x + "- Nombre: "+mostrarCartas[x].nombre +" Especie: " +  mostrarCartas[x].especie +" Poder: " +  mostrarCartas[x].poder + " Energia: "+ mostrarCartas[x].energia + "\n");
+            for(int x=0;x<mostrarCartas.cartas.Length;x++){
+                if(mostrarCartas.cartas[x].nombre != ""){
+                    Console.WriteLine(x + "- Nombre: "+mostrarCartas.cartas[x].nombre +" Especie: " +  mostrarCartas.cartas[x].especie +" Poder: " +  mostrarCartas.cartas[x].poder + " Energia: "+ mostrarCartas.cartas[x].energia + "\n");
+                }
             }
         }
 
         // COMPROVAR POSICIÓN CARTA
-        public static int ExistePosicionCarta(AngryBird [] cartasJugador ){
+        public static int ExistePosicionCarta(Jugador cartasJugador ){
             
             Console.WriteLine("===========ELEGIR CARTA JUGADOR===========");
             bool salir = false;
-            int numSelect = 0;
-            while(salir == false){
+            int numSelect;
+            do{
                 string selectCart = Console.ReadLine();
                 numSelect = int.Parse(selectCart);
-                if (numSelect >= cartasJugador.Length){
+                if (numSelect >= cartasJugador.cartas.Length || cartasJugador.cartas[numSelect].nombre == ""){
                     Console.WriteLine("Lo sentimos no tienes tantas Cartas");
                 }else{
                     salir = true;
-                    
                 }
-            }
+            }while(salir == false);
             Console.Clear();
             return numSelect;            
         }
 
         // MOSTRAR GANADOR
-        public static void MostrarGanador(int puntosJ1, int puntosJ2){
+        public static void MostrarGanador(int puntosJ1, int puntosJ2, Jugador jugador1, Jugador jugador2){
             Console.Clear();
             if(puntosJ1>puntosJ2){
-                Console.WriteLine("HA GANADO EL JUGADOR 1 !!!!!!!!!");
+                Console.WriteLine("HA GANADO EL "+jugador1.nombre+"!!!!!!!!!");
             }else if(puntosJ2>puntosJ1){
-                Console.WriteLine("HA GANADO EL JUGADOR 2 !!!!!!!!!");
+                Console.WriteLine("HA GANADO EL "+jugador2.nombre+"!!!!!!!!!");
             }else{
                 Console.WriteLine("EMPATE !!!!!!!!!");
             }
@@ -190,6 +218,7 @@ namespace activitat4C_
 
             // GESTIONAR CARTAS EN ARRAY
             AngryBird [] listaAngry = {rojo,amarillo,azules,verde,negro,blanco,naranja,rosa,rojoGordo};
+            AngryBird [] listaAngry2 = {rojo,amarillo,azules,verde,negro,blanco,naranja,rosa,rojoGordo};
 
             //CREAR A LOS 2 Jugadores
             Console.WriteLine("DAME TU NOMBRE DE JUGADOR1");
@@ -223,7 +252,7 @@ namespace activitat4C_
 
                 // JUGADORES CON LAS CARTAS REPARTIDAS
                 AngryBird [] jugador1CartasRepartidas = repartirCartas(number_of_carts,listaAngry,jugador1);
-                AngryBird [] jugador2CartasRepartidas = repartirCartas(number_of_carts,listaAngry,jugador2);                
+                AngryBird [] jugador2CartasRepartidas = repartirCartas(number_of_carts,listaAngry2,jugador2);                
 
                
                 //PlayGame(jugador1, jugador2);
